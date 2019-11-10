@@ -1,0 +1,9 @@
+{
+    "project_id":"infra-123456",
+    "source_image_family":"ubuntu-1604-lts",
+    "image_description":"Description",
+    "disk_size":"50",
+    "disk_type":"pd-ssd",
+    "network":"default",
+    "tags":"http"
+}
