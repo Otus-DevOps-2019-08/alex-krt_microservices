@@ -1,0 +1,20 @@
+---
+- name: Start Docker image reddit
+  hosts: all
+  become: true
+  tasks:
+    - name: Install pip
+      apt:
+        name: python-pip
+        update_cache: yes
+
+    - name: Install Docker SDK for python
+      pip:
+        name: docker
+
+    - name: Start container
+      docker_container:
+        name: reddit
+        image: zhmoorik/otus-reddit:1.0
+        ports:
+          - "9292:9292"
