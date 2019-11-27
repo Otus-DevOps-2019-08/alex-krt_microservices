@@ -164,3 +164,44 @@ groups:
 # Домашняя работа - Docker образы, микросервисы
 
 Разбитие приложение на микросервисы, работа с docker образами и их запуск
+
+# Домашняя работа - Сетевое взаимодействие Docker контейнеров. Docker Compose. Тестирование образов
+
+Для того, чтобы использовать несколько сетей, как в примере, необходимо в docker-compose.yml указать названия сетей, тип bridge и подсети:
+
+```
+networks:
+  back_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.2.0/24
+  front_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.1.0/24
+```
+
+И после этого в описании сервисов указать название нужной сети:
+
+```
+services:
+  post_db:
+    image: mongo:${MONGO_VER}
+# Здесь указывается имя контейнера
+    container_name: mongo_db
+    volumes:
+      - post_db:/data/db
+    networks:
+      back_net:
+# А здесь алиасы сетей
+        aliases:
+          - post_db
+          - comment_db
+```
+
+Для того, чтобы изменить базовое имя проекта, необходимо указать переменную среды COMPOSE_PROJECT_NAME, можно в файле .env
+Сам не проверял, но должно работать)))
