@@ -1,0 +1,19 @@
+---
+- name: install docker
+  hosts: all
+  become: true
+  tasks:
+    - name: Add gpg key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    - name: Add apt repo
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu xenial stable
+        state: present
+    - name: Install docker
+      apt:
+        pkg:
+        - docker-ce
+        - docker-compose
+        update_cache: yes
