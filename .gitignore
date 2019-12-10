@@ -4,3 +4,5 @@
 *.tfvars
 .terraform/
 variables.json
+.vscode/
+*.env

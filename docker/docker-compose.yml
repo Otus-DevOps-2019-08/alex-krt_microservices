@@ -11,7 +11,6 @@ services:
           - post_db
           - comment_db
   ui:
-    build: ./ui
     image: ${USER_NAME}/ui:${UI_VER}
     container_name: ui
     ports:
@@ -20,7 +19,6 @@ services:
       - front_net
 
   post:
-    build: ./post-py
     image: ${USER_NAME}/post:${POST_VER}
     container_name: post
     networks:
@@ -28,14 +26,43 @@ services:
       - front_net
 
   comment:
-    build: ./comment
     image: ${USER_NAME}/comment:${COMMENT_VER}
     container_name: comment
     networks:
       - back_net
       - front_net
 
+  prometheus:
+    image: ${USER_NAME}/prometheus
+    ports:
+      - '9090:9090'
+    volumes:
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention=1d'
+    networks:
+      - back_net
+      - front_net
+
+  node-exporter:
+    image: prom/node-exporter:v0.15.2
+    user: root
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+    networks:
+      - back_net
+      - front_net
+
 volumes:
+  prometheus_data:
   post_db:
 
 networks:
@@ -44,10 +71,10 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 10.0.2.0/24
+        - subnet: 10.0.3.0/24
   front_net:
     driver: bridge
     ipam:
       driver: default
       config:
-        - subnet: 10.0.1.0/24
+        - subnet: 10.0.4.0/24
