@@ -47,7 +47,7 @@ resource "google_compute_firewall" "firewall_puma" {
   name = "allow-puma-default"
   network = "default"
   allow {
-    protocol = "tcp" 
+    protocol = "tcp"
     ports = ["9292"]
   }
   source_ranges = ["0.0.0.0/0"]
@@ -212,5 +212,9 @@ services:
 Работа с приложением reddit, построение пайплайна и описание окружений.
 
 # Домашняя работа - Введение в мониторинг
+
+Ссылка на Docker Hub - https://hub.docker.com/u/zhmoorik
+
+# Домашняя работа - Мониторинг приложения и инфраструктуры
 
 Ссылка на Docker Hub - https://hub.docker.com/u/zhmoorik
