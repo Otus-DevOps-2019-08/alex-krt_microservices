@@ -2,19 +2,19 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: post-deployment
+  name: comment-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: post
+      app: comment
   template:
     metadata:
-      name: post
+      name: comment
       labels:
-        app: post
+        app: comment
     spec:
       containers:
-      - image: zhmoorik/post
-        name: post
+      - image: zhmoorik/comment
+        name: comment
 
